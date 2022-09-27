@@ -127,6 +127,71 @@
                 <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
 
     
     <article class="post-wrap">
@@ -149,7 +214,17 @@
         </header>
 
         <div class="post-content">
-            
+            <h1 id="vim初尝"><a href="#vim初尝" class="headerlink" title="vim初尝"></a>vim初尝</h1><p>最近了解了一下vim编辑器，挺感兴趣就写篇博客总计输出一下 这里的内容只是简单入门</p>
+<h2 id="4种模式"><a href="#4种模式" class="headerlink" title="4种模式"></a>4种模式</h2><p>首先vim具有4种模式<br>普通模式<br>输入模式<br>命令模式<br>可视模式</p>
+<h2 id="模式间的转换"><a href="#模式间的转换" class="headerlink" title="模式间的转换"></a>模式间的转换</h2><p>普通模式下<br>i 光标定位到当前字母的前面并进入输入模式<br>大写i 光标定位到当前行的前面并进入输入模式<br>a 光标定位到当前字母的后面并进入输入模式<br>大写a 光标定位到当前行的后面并进入输入模式<br>esc 退出输入模式 返回普通模式<br>v 进入可视模式 用于选中内容</p>
+<h2 id="普通模式"><a href="#普通模式" class="headerlink" title="普通模式"></a>普通模式</h2><p>普通模式下可以进行移动光标 编辑（剪切、复制、粘贴）等操作<br>普通模式无法输入</p>
+<h3 id="move-cursor-移动光标"><a href="#move-cursor-移动光标" class="headerlink" title="move cursor 移动光标"></a>move cursor 移动光标</h3><p>普通模式下<br>hjkl &#x3D;&gt; 左下上右<br>数字键+hjkl可以一次移动多格<br>w 跳转到下一个单词的开头 相当于ctrl right<br>b 跳转到上一个单词的开头 相当于ctrl left<br>ctrl u  &#x3D;&gt; pageUp<br>ctrl d  &#x3D;&gt; pageDown<br>双击 g 跳转到文档开头 相当于home<br>大写g 跳转到文档末尾 相当于end<br>f 相当于find f+任意一个字母 将光标移动到离你最近的字母上</p>
+<h3 id="edit"><a href="#edit" class="headerlink" title="edit"></a>edit</h3><p>normal mode<br>y &#x3D;&gt; copy<br>yy &#x3D;&gt; copy current line<br>yaw &#x3D;&gt; copy all word<br>y4j &#x3D;&gt; copy next 4lines<br>p &#x3D;&gt; paste<br>c &#x3D;&gt; change<br>cc &#x3D;&gt; change current line<br>d &#x3D;&gt; delete<br>dd &#x3D;&gt; delete current line<br>daw &#x3D;&gt; delete all word<br>d4k &#x3D;&gt; delte up 4lines<br>u &#x3D;&gt; undo ctrl z</p>
+<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><p>: 进入命令模式<br>q quit 退出文件<br>w write 覆写（保存）这个文件<br>qw 保存并退出<br>esc 退出命令模式</p>
+<h2 id="可视模式"><a href="#可视模式" class="headerlink" title="可视模式"></a>可视模式</h2><p>v 进入可视模式<br>进入可视模式 移动光标选中内容</p>
+<h2 id="plugin-插件"><a href="#plugin-插件" class="headerlink" title="plugin 插件"></a>plugin 插件</h2><p>vim有丰富的插件<br>比如 目录树插件 nerdTree<br>coc.nvim 自动补全插件<br>主题插件等等 可自行探索</p>
+<h2 id="vim网站"><a href="#vim网站" class="headerlink" title="vim网站"></a>vim网站</h2><p>vim练习游戏网站 <a target="_blank" rel="noopener" href="https://vim-adventures.com/">https://vim-adventures.com/</a><br><a target="_blank" rel="noopener" href="https://vimawesome.com/">https://vimawesome.com/</a></p>
+
         </div>
 
         
@@ -181,6 +256,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/vim/"># vim</a>
+                    
+                        
                 </span>
             </div>
             <div>
